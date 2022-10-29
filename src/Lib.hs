@@ -1,7 +1,6 @@
 module Lib
-  (
-    makeGuess,
-    makeGuessInLoopWithAttempts
+  ( makeGuess,
+    makeGuessInLoopWithAttempts,
   )
 where
 
@@ -23,14 +22,16 @@ createStarsOfLen n = "*" ++ createStarsOfLen (n - 1)
 
 makeGuess :: IO Int
 makeGuess = do
-    putStrLn "Make a guess:"
-    input <- getLine
-    return (read input)
-    
+  putStrLn "Make a guess:"
+  input <- getLine
+  return (read input)
+
 makeGuessInLoopWithAttempts :: IO Int -> Int -> Int -> IO ()
 makeGuessInLoopWithAttempts _ target 0 = putStrLn ("You lost. The number was " ++ show target)
 makeGuessInLoopWithAttempts input target attempts = do
   guess <- input
   if guess == target
     then putStrLn "You won! Thank you for playing!"
-    else putStrLn (createStarsOfLen (checkGuess target guess)) >> makeGuessInLoopWithAttempts makeGuess target (attempts - 1)
+    else do
+      putStrLn (createStarsOfLen (checkGuess target guess))
+      makeGuessInLoopWithAttempts makeGuess target (attempts - 1)
