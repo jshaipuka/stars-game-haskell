@@ -1,5 +1,5 @@
 module Lib
-  ( hasWon,
+  (
     getDistance,
     checkGuess,
     createStarsOfLen,
@@ -8,10 +8,6 @@ module Lib
     makeGuessInLoop
   )
 where
-
-hasWon :: Int -> Int -> Bool
-hasWon x y | x == y = True
-hasWon _ _ = False
 
 getDistance :: Int -> Int
 getDistance distance | distance >= 64 = 1
@@ -29,28 +25,15 @@ createStarsOfLen :: Int -> String
 createStarsOfLen 0 = ""
 createStarsOfLen n = "*" ++ createStarsOfLen (n - 1)
 
-isGoodCharPure :: Char -> IO Bool
-isGoodCharPure 'a' = pure True
-isGoodCharPure _ = pure False
-
---isGoodCharPure :: Char -> Bool
---isGoodCharPure 'a' = True
---isGoodCharPure _ = False
---
-isGoodChar :: IO Char -> IO Bool
-isGoodChar c = do
-  v <- c
-  isGoodCharPure v
-
 makeGuess :: IO Int
 makeGuess = do
     putStrLn "Make a guess:"
     input <- getLine
     return (read input)
 
-makeGuessInLoop :: IO Int -> IO ()
-makeGuessInLoop c = do
-  v <- c
-  if v == 0 then putStrLn "Thank you for playing!" else makeGuessInLoop makeGuess
---makeGuessInLoop n = do
---  makeGuessInLoop makeGuess
+makeGuessInLoop :: IO Int -> Int -> IO ()
+makeGuessInLoop input target = do
+  guess <- input
+  if guess == target
+    then putStrLn "You won! Thank you for playing!"
+    else putStrLn (createStarsOfLen (checkGuess target guess)) >> makeGuessInLoop makeGuess target
