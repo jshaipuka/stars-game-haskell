@@ -23,8 +23,7 @@ createStarsOfLen n = "*" ++ createStarsOfLen (n - 1)
 makeGuess :: IO Int
 makeGuess = do
   putStrLn "Make a guess:"
-  input <- getLine
-  return (read input)
+  read <$> getLine
 
 makeGuessInLoopWithAttempts :: IO Int -> Int -> Int -> IO ()
 makeGuessInLoopWithAttempts _ target 0 = putStrLn ("You lost. The number was " ++ show target)
